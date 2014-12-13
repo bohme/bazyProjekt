@@ -8,3 +8,7 @@ D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProjec
 D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\bin\Debug\UDTProject.pdb
 D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\UDTProject.dll
 D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\UDTProject.pdb
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\Model.xml
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\refactor.xml
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\postdeploy.sql
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\predeploy.sql
