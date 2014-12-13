@@ -1,0 +1,17 @@
+﻿USE UDTProject
+GO
+
+DROP TABLE Person
+GO
+
+DROP TYPE Pesel
+GO
+
+DROP ASSEMBLY UDTProject
+GO
+
+USE master
+GO
+
+DROP DATABASE UDTProject
+GO

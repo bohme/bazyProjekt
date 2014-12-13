@@ -3,3 +3,8 @@ d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\bin\Debug\UD
 d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\bin\Debug\UDTProject.pdb
 d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\obj\Debug\UDTProject.dll
 d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\obj\Debug\UDTProject.pdb
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\bin\Debug\UDTProject.dacpac
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\bin\Debug\UDTProject.dll
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\bin\Debug\UDTProject.pdb
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\UDTProject.dll
+D:\Dane\Documents\Bartek\Studia\Semestr VII\Bazy danych II\bazyProjekt\UDTProject\UDTProject\obj\Debug\UDTProject.pdb

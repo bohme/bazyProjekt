@@ -76,8 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Person\Types\Pesel.cs" />
-    <Compile Include="Person\Types\SqlStoredProcedure1.cs" />
-    <Compile Include="Person\Types\sdf.cs" />
-    <Compile Include="Person\Types\dgdfg.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Person\CleanDatabase.sql" />
   </ItemGroup>
 </Project>
