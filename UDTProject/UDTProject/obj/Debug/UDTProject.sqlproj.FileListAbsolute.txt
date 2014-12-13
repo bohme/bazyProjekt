@@ -1,0 +1,5 @@
+d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\bin\Debug\UDTProject.dacpac
+d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\bin\Debug\UDTProject.dll
+d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\bin\Debug\UDTProject.pdb
+d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\obj\Debug\UDTProject.dll
+d:\dane\documents\visual studio 2013\Projects\UDTProject\UDTProject\obj\Debug\UDTProject.pdb
