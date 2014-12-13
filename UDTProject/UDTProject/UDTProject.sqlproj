@@ -77,5 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Person\Types\Pesel.cs" />
+    <Compile Include="Person\Types\BankAccount.cs" />
   </ItemGroup>
 </Project>

@@ -4,5 +4,7 @@
     [LastName] TEXT NOT NULL, 
     [City] TEXT NULL, 
     [Pesel] [dbo].[Pesel] NOT NULL, 
+	[BankAccount] [dbo].[BankAccount] NOT NULL,
     PRIMARY KEY ([Pesel]) 
 )
+
