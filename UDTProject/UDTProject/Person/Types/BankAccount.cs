@@ -74,7 +74,7 @@ public struct BankAccount : INullable, IBinarySerialize
             if(validate(bankAccount))
                 return bankAccount;
             else
-                return Null;
+                throw new ArgumentException("Numer konta bankowego jest nieprawidlowy!");
         }
 
      void IBinarySerialize.Write(System.IO.BinaryWriter w)
