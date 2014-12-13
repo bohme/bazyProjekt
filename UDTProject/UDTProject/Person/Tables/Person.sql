@@ -4,5 +4,5 @@
     [FirstName] TEXT NOT NULL, 
     [LastName] TEXT NOT NULL, 
     [City] TEXT NULL, 
-    [Pesel] [dbo].[Pesel] NOT NULL
+    [Pesel] [dbo].[Pesel] NOT NULL 
 )
