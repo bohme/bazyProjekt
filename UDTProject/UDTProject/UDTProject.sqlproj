@@ -80,5 +80,6 @@
   <ItemGroup>
     <Compile Include="Person\Types\Pesel.cs" />
     <Compile Include="Person\Types\BankAccount.cs" />
+    <Compile Include="Person\Types\NIP.cs" />
   </ItemGroup>
 </Project>
