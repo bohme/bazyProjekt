@@ -60,15 +60,18 @@ public struct Email : INullable, IBinarySerialize
         if (s.IsNull)
             return Null;
 
+        if(s.Value.IndexOf("@") < 0)
+            throw new ArgumentException("Niew³aœciwy format adresu Email!");
+
         Email email = new Email();
         email.FullEmail = s.Value;
         email.beforeM = s.Value.Substring(0, s.Value.IndexOf("@"));
         email.afterM = s.Value.Substring(s.Value.IndexOf("@"));
 
-        if (Validate(email))
-            return email;
-        else
+        if (!Validate(email))
             throw new ArgumentException("Niew³aœciwy format adresu Email!");
+
+        return email;
         
     }
 
