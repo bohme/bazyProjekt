@@ -28,7 +28,7 @@ public struct BankAccount : INullable, IBinarySerialize
     private static bool Validate(BankAccount b)
     {
         string bankAccount = b.control + b.partOne + b.partTwo + b.partThree + b.partFour + b.partFive + b.partSix;
-        bankAccount = bankAccount.ToUpper(); //IN ORDER TO COPE WITH THE REGEX BELOW
+        bankAccount = bankAccount.ToUpper(); 
         if (String.IsNullOrEmpty(bankAccount))
             return false;
         else if (System.Text.RegularExpressions.Regex.IsMatch(bankAccount, "^[A-Z0-9]"))
