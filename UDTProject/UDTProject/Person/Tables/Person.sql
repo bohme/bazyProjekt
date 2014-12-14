@@ -5,6 +5,7 @@
     [City] TEXT NULL, 
     [Pesel] [dbo].[Pesel] NOT NULL, 
 	[BankAccount] [dbo].[BankAccount] NOT NULL,
+    [NIP] [dbo].[NIP] NOT NULL, 
     PRIMARY KEY ([Pesel]) 
 )
 
