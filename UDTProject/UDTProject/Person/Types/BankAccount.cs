@@ -27,7 +27,7 @@ public struct BankAccount : INullable, IBinarySerialize
 
     private static bool Validate(BankAccount b)
     {
-        string bankAccount = b.control + b.partOne + b.partTwo + b.partThree + b.partFour + b.partFive + b.partSix;
+        string bankAccount = "PL" + b.control + b.partOne + b.partTwo + b.partThree + b.partFour + b.partFive + b.partSix;
         bankAccount = bankAccount.ToUpper(); 
         if (String.IsNullOrEmpty(bankAccount))
             return false;
