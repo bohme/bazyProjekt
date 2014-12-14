@@ -66,6 +66,7 @@
     <Build Include="Person\Person.sql" />
     <Build Include="Person\Tables\Person.sql" />
     <None Include="CleanDatabase.sql" />
+    <Build Include="Person\Types\CreateType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="UDTProject.refactorlog" />

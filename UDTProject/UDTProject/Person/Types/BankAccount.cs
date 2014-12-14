@@ -6,7 +6,7 @@ using Microsoft.SqlServer.Server;
 
 
 [Serializable]
-[Microsoft.SqlServer.Server.SqlUserDefinedType(Format.Native, IsByteOrdered = true, ValidationMethodName = "ValidateInput", MaxByteSize = 170))]
+[Microsoft.SqlServer.Server.SqlUserDefinedType(Format.Native, IsByteOrdered = true, ValidationMethodName = "ValidateInput", MaxByteSize = 170)]
 public struct BankAccount : INullable, IBinarySerialize
 {
     private string control { get; set; }
@@ -64,35 +64,35 @@ public struct BankAccount : INullable, IBinarySerialize
            BankAccount b = new BankAccount();
            b._null = true;
            return b;
-
         }
     }
     public static BankAccount parse(SqlString account)    {
         if (account.IsNull)
             return Null;
 
-        BankAccount bankAccount = new BankAccount();
         if (account.Value.Length != 26)
             throw new ArgumentException("Numer konta bankowego ma nieprawidlowa dlugosc!");
-        else
-        {    
-            bankAccount.control = account.Value.Substring(0, 2);
-            bankAccount.partOne = account.Value.Substring(2, 4);
-            bankAccount.partTwo = account.Value.Substring(6, 4);
-            bankAccount.partThree = account.Value.Substring(10, 4);
-            bankAccount.partFour = account.Value.Substring(14, 4);
-            bankAccount.partFive = account.Value.Substring(18, 4);
-            bankAccount.partSix = account.Value.Substring(22, 4);
-        }
-            if(validate(bankAccount))
-                return bankAccount;
-            else
-                throw new ArgumentException("Numer konta bankowego jest nieprawidlowy!");
-        }
+  
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.control = account.Value.Substring(0, 2);
+        bankAccount.partOne = account.Value.Substring(2, 4);
+        bankAccount.partTwo = account.Value.Substring(6, 4);
+        bankAccount.partThree = account.Value.Substring(10, 4);
+        bankAccount.partFour = account.Value.Substring(14, 4);
+        bankAccount.partFive = account.Value.Substring(18, 4);
+        bankAccount.partSix = account.Value.Substring(22, 4);
 
-     void IBinarySerialize.Write(System.IO.BinaryWriter w)
+        if(validate(bankAccount))
+            return bankAccount;
+        else
+            throw new ArgumentException("Numer konta bankowego jest nieprawidlowy!");
+    }
+
+    void IBinarySerialize.Write(System.IO.BinaryWriter w)
     {
-        if (control.Length != 0)
+        w.Write(IsNull);
+
+        if (!IsNull)
         {
             w.Write(control);
             w.Write(partOne);
@@ -106,14 +106,17 @@ public struct BankAccount : INullable, IBinarySerialize
 
     void IBinarySerialize.Read(System.IO.BinaryReader r)
     {
-        control = r.ReadString();
-        partOne = r.ReadString();
-        partTwo = r.ReadString();
-        partThree = r.ReadString();
-        partFour = r.ReadString();
-        partFive = r.ReadString();
-        partSix = r.ReadString();
+        _null = r.ReadBoolean();
+
+        if (!IsNull)
+        {
+            control = r.ReadString();
+            partOne = r.ReadString();
+            partTwo = r.ReadString();
+            partThree = r.ReadString();
+            partFour = r.ReadString();
+            partFive = r.ReadString();
+            partSix = r.ReadString();
+        }
     }
-
-
 }
