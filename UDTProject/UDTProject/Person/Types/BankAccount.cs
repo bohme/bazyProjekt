@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using Microsoft.SqlServer.Server;
+using System.Text;
 
 
 [Serializable]
@@ -26,21 +27,35 @@ public struct BankAccount : INullable, IBinarySerialize
 
     private static bool Validate(BankAccount b)
     {
-        int[] weight = { 1, 10, 3, 30, 9, 90, 27, 76, 81, 34, 49, 5, 50, 15, 53, 45, 62, 38, 89, 17, 73, 51, 25, 56, 75, 71, 31, 19, 93, 57 };
-        String temp = b.partOne + b.partTwo + b.partThree + b.partFour + b.partFive + b.partSix + "2521" + b.control;
-        int[] accountTable = new int[26];
-        for (int i = 0; i < 26; i++)
+        string bankAccount = b.control + b.partOne + b.partTwo + b.partThree + b.partFour + b.partFive + b.partSix;
+        bankAccount = bankAccount.ToUpper(); //IN ORDER TO COPE WITH THE REGEX BELOW
+        if (String.IsNullOrEmpty(bankAccount))
+            return false;
+        else if (System.Text.RegularExpressions.Regex.IsMatch(bankAccount, "^[A-Z0-9]"))
         {
-            accountTable[i] = (int)Char.GetNumericValue(temp[0]);
+            bankAccount = bankAccount.Replace(" ", String.Empty);
+            string bank =
+            bankAccount.Substring(4, bankAccount.Length - 4) + bankAccount.Substring(0, 4);
+            int asciiShift = 55;
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in bank)
+            {
+                int v;
+                if (Char.IsLetter(c)) v = c - asciiShift;
+                else v = int.Parse(c.ToString());
+                sb.Append(v);
+            }
+            string checkSumString = sb.ToString();
+            int checksum = int.Parse(checkSumString.Substring(0, 1));
+            for (int i = 1; i < checkSumString.Length; i++)
+            {
+                int v = int.Parse(checkSumString.Substring(i, 1));
+                checksum *= 10;
+                checksum += v;
+                checksum %= 97;
+            }
+            return checksum == 1;
         }
-
-        int sum = 0;
-        for (int i = 25; i >= 0; i--)
-        {
-            sum += accountTable[i] * weight[25 - i];
-        }
-        if (sum % 97 == 1)
-            return true;
         else
             return false;
     }
