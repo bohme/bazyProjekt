@@ -19,12 +19,12 @@ public struct BankAccount : INullable, IBinarySerialize
     private bool _null;
 
 
-    private bool validateInput()
+    private bool ValidateInput()
     {
-        return BankAccount.validate(this);
+        return BankAccount.Validate(this);
     }
 
-    private static bool validate(BankAccount b)
+    private static bool Validate(BankAccount b)
     {
         int[] weight = { 1, 10, 3, 30, 9, 90, 27, 76, 81, 34, 49, 5, 50, 15, 53, 45, 62, 38, 89, 17, 73, 51, 25, 56, 75, 71, 31, 19, 93, 57 };
         String temp = b.partOne + b.partTwo + b.partThree + b.partFour + b.partFive + b.partSix + "2521" + b.control;
@@ -35,7 +35,7 @@ public struct BankAccount : INullable, IBinarySerialize
         }
 
         int sum = 0;
-        for (int i = 25; i >= 0; i++)
+        for (int i = 25; i >= 0; i--)
         {
             sum += accountTable[i] * weight[25 - i];
         }
@@ -67,7 +67,7 @@ public struct BankAccount : INullable, IBinarySerialize
         }
     }
 
-    public static BankAccount parse(SqlString account)    {
+    public static BankAccount Parse(SqlString account)    {
         if (account.IsNull)
             return Null;
 
@@ -83,10 +83,10 @@ public struct BankAccount : INullable, IBinarySerialize
         bankAccount.partFive = account.Value.Substring(18, 4);
         bankAccount.partSix = account.Value.Substring(22, 4);
 
-        if(validate(bankAccount))
-            return bankAccount;
-        else
+        if(!Validate(bankAccount))
             throw new ArgumentException("Numer konta bankowego jest nieprawidlowy!");
+
+        return bankAccount;
     }
 
     void IBinarySerialize.Write(System.IO.BinaryWriter w)
