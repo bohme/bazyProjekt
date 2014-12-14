@@ -6,7 +6,7 @@ using Microsoft.SqlServer.Server;
 
 
 [Serializable]
-[Microsoft.SqlServer.Server.SqlUserDefinedType(Format.Native, IsByteOrdered = true, ValidationMethodName = "ValidateInput", MaxByteSize = 170)]
+[Microsoft.SqlServer.Server.SqlUserDefinedType(Format.UserDefined, IsByteOrdered = true, ValidationMethodName = "ValidateInput", MaxByteSize = 170)]
 public struct BankAccount : INullable, IBinarySerialize
 {
     private string control { get; set; }
@@ -66,6 +66,7 @@ public struct BankAccount : INullable, IBinarySerialize
            return b;
         }
     }
+
     public static BankAccount parse(SqlString account)    {
         if (account.IsNull)
             return Null;
