@@ -9,13 +9,3 @@ Debug*/Debug*\ Libs
 *.rbuistate
 *.obsolete
 UDTProject/UDTProject/UDTProject.dbmdl
-UDTProject/UDTProject.v12.suo
-UDTProject/UDTProject/bin/Debug/UDTProject.dacpac
-UDTProject/UDTProject/bin/Debug/UDTProject.dll
-UDTProject/UDTProject/bin/Debug/UDTProject.pdb
-UDTProject/UDTProject/bin/Debug/UDTProject_Create.sql
-UDTProject/UDTProject/obj/Debug/Model.xml
-UDTProject/UDTProject/obj/Debug/UDTProject.dll
-UDTProject/UDTProject/obj/Debug/UDTPROJECT.generated.sql
-UDTProject/UDTProject/obj/Debug/UDTProject.pdb
-UDTProject/UDTProject/UDTProject.sqlproj
