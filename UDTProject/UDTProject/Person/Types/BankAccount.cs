@@ -6,7 +6,7 @@ using Microsoft.SqlServer.Server;
 
 
 [Serializable]
-[Microsoft.SqlServer.Server.SqlUserDefinedType(Format.Native, IsByteOrdered = true, ValidationMethodName = "ValidateInput")]
+[Microsoft.SqlServer.Server.SqlUserDefinedType(Format.Native, IsByteOrdered = true, ValidationMethodName = "ValidateInput", MaxByteSize = 170))]
 public struct BankAccount : INullable, IBinarySerialize
 {
     private string control { get; set; }
@@ -16,6 +16,7 @@ public struct BankAccount : INullable, IBinarySerialize
     private string partFour { get; set; }
     private string partFive { get; set; }
     private string partSix { get; set; }
+    private bool _null;
 
 
     private bool validateInput()
@@ -48,16 +49,28 @@ public struct BankAccount : INullable, IBinarySerialize
         return this.control+ " " + this.partOne + " " + this.partTwo + " " + this.partThree+" " + this.partFour+ " " + this.partFive+ " " + this.partSix;
     }
 
+    public bool IsNull
+    {
+        get
+        {
+            return _null;
+        }
+    }
+
     public static BankAccount Null
     {
         get
         {
            BankAccount b = new BankAccount();
+           b._null = true;
            return b;
 
         }
     }
     public static BankAccount parse(SqlString account)    {
+        if (account.IsNull)
+            return Null;
+
         BankAccount bankAccount = new BankAccount();
         if (account.Value.Length != 26)
             throw new ArgumentException("Numer konta bankowego ma nieprawidlowa dlugosc!");
