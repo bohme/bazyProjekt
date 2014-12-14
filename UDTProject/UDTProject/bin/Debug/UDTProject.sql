@@ -15,8 +15,8 @@ SET NUMERIC_ROUNDABORT OFF;
 GO
 :setvar DatabaseName "UDTProject_2"
 :setvar DefaultFilePrefix "UDTProject_2"
-:setvar DefaultDataPath ""
-:setvar DefaultLogPath ""
+:setvar DefaultDataPath "C:\Users\Bartek\AppData\Local\Microsoft\VisualStudio\SSDT\UDTProject"
+:setvar DefaultLogPath "C:\Users\Bartek\AppData\Local\Microsoft\VisualStudio\SSDT\UDTProject"
 
 GO
 :on error exit
@@ -36,140 +36,71 @@ IF N'$(__IsSqlCmdEnabled)' NOT LIKE N'True'
 
 
 GO
-USE [master];
-
-
-GO
-
-IF (DB_ID(N'$(DatabaseName)') IS NOT NULL) 
-BEGIN
-    ALTER DATABASE [$(DatabaseName)]
-    SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE [$(DatabaseName)];
-END
-
-GO
-PRINT N'Creating $(DatabaseName)...'
-GO
-CREATE DATABASE [$(DatabaseName)] COLLATE SQL_Latin1_General_CP1_CI_AS
-GO
-IF EXISTS (SELECT 1
-           FROM   [master].[dbo].[sysdatabases]
-           WHERE  [name] = N'$(DatabaseName)')
-    BEGIN
-        ALTER DATABASE [$(DatabaseName)]
-            SET ANSI_NULLS ON,
-                ANSI_PADDING ON,
-                ANSI_WARNINGS ON,
-                ARITHABORT ON,
-                CONCAT_NULL_YIELDS_NULL ON,
-                NUMERIC_ROUNDABORT OFF,
-                QUOTED_IDENTIFIER ON,
-                ANSI_NULL_DEFAULT ON,
-                CURSOR_DEFAULT LOCAL,
-                RECOVERY FULL,
-                CURSOR_CLOSE_ON_COMMIT OFF,
-                AUTO_CREATE_STATISTICS ON,
-                AUTO_SHRINK OFF,
-                AUTO_UPDATE_STATISTICS ON,
-                RECURSIVE_TRIGGERS OFF 
-            WITH ROLLBACK IMMEDIATE;
-        ALTER DATABASE [$(DatabaseName)]
-            SET AUTO_CLOSE OFF 
-            WITH ROLLBACK IMMEDIATE;
-    END
-
-
-GO
-IF EXISTS (SELECT 1
-           FROM   [master].[dbo].[sysdatabases]
-           WHERE  [name] = N'$(DatabaseName)')
-    BEGIN
-        ALTER DATABASE [$(DatabaseName)]
-            SET ALLOW_SNAPSHOT_ISOLATION OFF;
-    END
-
-
-GO
-IF EXISTS (SELECT 1
-           FROM   [master].[dbo].[sysdatabases]
-           WHERE  [name] = N'$(DatabaseName)')
-    BEGIN
-        ALTER DATABASE [$(DatabaseName)]
-            SET READ_COMMITTED_SNAPSHOT OFF 
-            WITH ROLLBACK IMMEDIATE;
-    END
-
-
-GO
-IF EXISTS (SELECT 1
-           FROM   [master].[dbo].[sysdatabases]
-           WHERE  [name] = N'$(DatabaseName)')
-    BEGIN
-        ALTER DATABASE [$(DatabaseName)]
-            SET AUTO_UPDATE_STATISTICS_ASYNC OFF,
-                PAGE_VERIFY NONE,
-                DATE_CORRELATION_OPTIMIZATION OFF,
-                DISABLE_BROKER,
-                PARAMETERIZATION SIMPLE,
-                SUPPLEMENTAL_LOGGING OFF 
-            WITH ROLLBACK IMMEDIATE;
-    END
-
-
-GO
-IF IS_SRVROLEMEMBER(N'sysadmin') = 1
-    BEGIN
-        IF EXISTS (SELECT 1
-                   FROM   [master].[dbo].[sysdatabases]
-                   WHERE  [name] = N'$(DatabaseName)')
-            BEGIN
-                EXECUTE sp_executesql N'ALTER DATABASE [$(DatabaseName)]
-    SET TRUSTWORTHY OFF,
-        DB_CHAINING OFF 
-    WITH ROLLBACK IMMEDIATE';
-            END
-    END
-ELSE
-    BEGIN
-        PRINT N'The database settings cannot be modified. You must be a SysAdmin to apply these settings.';
-    END
-
-
-GO
-IF IS_SRVROLEMEMBER(N'sysadmin') = 1
-    BEGIN
-        IF EXISTS (SELECT 1
-                   FROM   [master].[dbo].[sysdatabases]
-                   WHERE  [name] = N'$(DatabaseName)')
-            BEGIN
-                EXECUTE sp_executesql N'ALTER DATABASE [$(DatabaseName)]
-    SET HONOR_BROKER_PRIORITY OFF 
-    WITH ROLLBACK IMMEDIATE';
-            END
-    END
-ELSE
-    BEGIN
-        PRINT N'The database settings cannot be modified. You must be a SysAdmin to apply these settings.';
-    END
-
-
-GO
 USE [$(DatabaseName)];
 
 
 GO
-IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
-    EXECUTE sp_fulltext_database 'enable';
+PRINT N'Unbinding columns from changing objects on table [dbo].[Person]...';
 
 
 GO
-PRINT N'Creating [Person]...';
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+SET XACT_ABORT ON;
+
+CREATE TABLE [dbo].[tmp_ms_xx_Person] (
+    [FirstName]   TEXT          NOT NULL,
+    [LastName]    TEXT          NOT NULL,
+    [City]        TEXT          NULL,
+    [Pesel]       NVARCHAR (85) NOT NULL,
+    [BankAccount] NVARCHAR (85) NOT NULL
+);
+
+IF EXISTS (SELECT TOP 1 1 
+           FROM   [dbo].[Person])
+    BEGIN
+        INSERT INTO [dbo].[tmp_ms_xx_Person] ([FirstName], [LastName], [City], [Pesel], [BankAccount])
+        SELECT [FirstName],
+               [LastName],
+               [City],
+               [Pesel].ToString(),
+               [BankAccount].ToString()
+        FROM   [dbo].[Person];
+    END
+
+DROP TABLE [dbo].[Person];
+
+EXECUTE sp_rename N'[dbo].[tmp_ms_xx_Person]', N'Person';
+
+COMMIT TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 
 GO
-CREATE SCHEMA [Person]
-    AUTHORIZATION [dbo];
+PRINT N'Dropping [dbo].[Pesel]...';
+
+
+GO
+DROP TYPE [dbo].[Pesel];
+
+
+GO
+PRINT N'Dropping [dbo].[BankAccount]...';
+
+
+GO
+DROP TYPE [dbo].[BankAccount];
+
+
+GO
+PRINT N'Dropping [UDTProject]...';
+
+
+GO
+DROP ASSEMBLY [UDTProject];
 
 
 GO
@@ -207,11 +138,17 @@ CREATE TYPE [dbo].[BankAccount]
 
 
 GO
-PRINT N'Creating [dbo].[Person]...';
+PRINT N'Starting rebuilding table [dbo].[Person]...';
 
 
 GO
-CREATE TABLE [dbo].[Person] (
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+SET XACT_ABORT ON;
+
+CREATE TABLE [dbo].[tmp_ms_xx_Person] (
     [FirstName]   TEXT                NOT NULL,
     [LastName]    TEXT                NOT NULL,
     [City]        TEXT                NULL,
@@ -220,43 +157,25 @@ CREATE TABLE [dbo].[Person] (
     PRIMARY KEY CLUSTERED ([Pesel] ASC)
 );
 
-
-GO
--- Refactoring step to update target server with deployed transaction logs
-
-IF OBJECT_ID(N'dbo.__RefactorLog') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[__RefactorLog] (OperationKey UNIQUEIDENTIFIER NOT NULL PRIMARY KEY)
-    EXEC sp_addextendedproperty N'microsoft_database_tools_support', N'refactoring log', N'schema', N'dbo', N'table', N'__RefactorLog'
-END
-GO
-IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = 'c86f8922-c70a-453a-b748-f8587af4e52c')
-INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('c86f8922-c70a-453a-b748-f8587af4e52c')
-
-GO
-
-GO
-DECLARE @VarDecimalSupported AS BIT;
-
-SELECT @VarDecimalSupported = 0;
-
-IF ((ServerProperty(N'EngineEdition') = 3)
-    AND (((@@microsoftversion / power(2, 24) = 9)
-          AND (@@microsoftversion & 0xffff >= 3024))
-         OR ((@@microsoftversion / power(2, 24) = 10)
-             AND (@@microsoftversion & 0xffff >= 1600))))
-    SELECT @VarDecimalSupported = 1;
-
-IF (@VarDecimalSupported > 0)
+IF EXISTS (SELECT TOP 1 1 
+           FROM   [dbo].[Person])
     BEGIN
-        EXECUTE sp_db_vardecimal_storage_format N'$(DatabaseName)', 'ON';
+        INSERT INTO [dbo].[tmp_ms_xx_Person] ([FirstName], [LastName], [City], [Pesel], [BankAccount])
+        SELECT [FirstName],
+               [LastName],
+               [City],
+               [Pesel],
+               [BankAccount]
+        FROM   [dbo].[Person];
     END
 
+DROP TABLE [dbo].[Person];
 
-GO
-ALTER DATABASE [$(DatabaseName)]
-    SET MULTI_USER 
-    WITH ROLLBACK IMMEDIATE;
+EXECUTE sp_rename N'[dbo].[tmp_ms_xx_Person]', N'Person';
+
+COMMIT TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
 
 GO

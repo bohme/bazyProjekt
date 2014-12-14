@@ -62,6 +62,7 @@
     <Folder Include="Person" />
     <Folder Include="Person\Types" />
     <Folder Include="Person\Tables" />
+    <Folder Include="TestsScripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Person\Person.sql" />

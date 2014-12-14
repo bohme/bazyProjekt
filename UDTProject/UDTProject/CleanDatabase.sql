@@ -1,4 +1,4 @@
-﻿USE UDTProject
+﻿USE UDTProject_test
 GO
 
 DROP TABLE Person
@@ -7,11 +7,14 @@ GO
 DROP TYPE Pesel
 GO
 
+DROP TYPE BankAccount
+GO
+
 DROP ASSEMBLY UDTProject
 GO
 
 USE master
 GO
 
-DROP DATABASE UDTProject
+DROP DATABASE UDTProject_test
 GO
